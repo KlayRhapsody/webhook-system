@@ -2,7 +2,7 @@ using Webhook.Api.Models;
 
 namespace Webhook.Api.Repositories;
 
-public sealed class InMemoryOrderRepository
+internal sealed class InMemoryOrderRepository
 {
     private readonly List<Order> _orders = [];
 
