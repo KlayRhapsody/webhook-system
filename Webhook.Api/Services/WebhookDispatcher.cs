@@ -1,28 +1,72 @@
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Webhook.Api.Data;
 using Webhook.Api.Models;
-using Webhook.Api.Repositories;
 
 namespace Webhook.Api.Services;
 
 internal sealed class WebhookDispatcher(
-    HttpClient httpClient,
-    InMemoryWebhookSubscriptionRepository subscriptionRepository)
+    IHttpClientFactory httpClientFactory,
+    WebhooksDbContext dbContext)
 {
-    public async Task DispatchAsync(string eventType, object payload)
+    public async Task DispatchAsync<T>(string eventType, T data)
     {
-        IReadOnlyList<WebhookSubscription> subscriptions = subscriptionRepository.GetByEventType(eventType);
+        List<WebhookSubscription> subscriptions = await dbContext.Subscriptions
+            .AsNoTracking()
+            .Where(s => s.EventType == eventType)
+            .ToListAsync();
 
         foreach (WebhookSubscription subscription in subscriptions)
         {
-            var request = new
+            using HttpClient httpClient = httpClientFactory.CreateClient();
+
+            var payload = new WebhookPayload<T>()
             {
                 Id = Guid.NewGuid(),
-                subscription.EventType,
+                EventType = subscription.EventType,
                 SubscriptionId = subscription.Id,
                 Timestamp = DateTime.UtcNow,
-                Data = payload
+                Data = data,
             };
 
-            await httpClient.PostAsJsonAsync(subscription.WebhookUrl, request);
+            string jsonPayload = JsonSerializer.Serialize(payload);
+
+            try
+            {
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(
+                    subscription.WebhookUrl,
+                    payload);
+
+                var attempt = new WebhookDeliverAttempt()
+                {
+                    Id = Guid.NewGuid(),
+                    WebSubscriptionId = subscription.Id,
+                    Payload = jsonPayload,
+                    ResponseStatusCode = (int)response.StatusCode,
+                    Success = response.IsSuccessStatusCode,
+                    Timestamp = DateTime.UtcNow
+                };
+
+                dbContext.WebhookDeliverAttempt.Add(attempt);
+
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                var attempt = new WebhookDeliverAttempt()
+                {
+                    Id = Guid.NewGuid(),
+                    WebSubscriptionId = subscription.Id,
+                    Payload = jsonPayload,
+                    ResponseStatusCode = null,
+                    Success = false,
+                    Timestamp = DateTime.UtcNow
+                };
+
+                dbContext.WebhookDeliverAttempt.Add(attempt);
+
+                await dbContext.SaveChangesAsync();
+            }
         }
     }
 }

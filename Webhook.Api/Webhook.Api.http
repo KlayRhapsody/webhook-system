@@ -1,4 +1,4 @@
-@Webhook_Api_HostAddress = http://localhost:5166
+@Webhook_Api_HostAddress = https://localhost:7248
 
 ### Create order
 
@@ -17,5 +17,5 @@ Content-Type: application/json
 
 {
     "eventType": "order.created",
-    "webhookUrl": "https://webhook.site/aa55b227-15a9-44ba-9a90-0df2c67806d5"
+    "webhookUrl": "https://webhook.site/9744bf7c-d416-411e-8bcc-35211d240e5b"
 }
