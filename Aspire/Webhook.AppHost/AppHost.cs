@@ -5,8 +5,14 @@ var database = builder.AddPostgres("postgres")
     .WithPgAdmin()
     .AddDatabase("webhooks");
 
+var queue = builder.AddRabbitMQ("rabbitmq")
+    .WithDataVolume()
+    .WithManagementPlugin();
+
 builder.AddProject<Projects.Webhook_Api>("webhook-api")
     .WithReference(database)
-    .WaitFor(database);
+    .WithReference(queue)
+    .WaitFor(database)
+    .WaitFor(queue);
 
 builder.Build().Run();

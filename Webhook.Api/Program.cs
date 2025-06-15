@@ -1,5 +1,7 @@
 using System.Threading.Channels;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Webhook.Api.Data;
 using Webhook.Api.Extensions;
 using Webhook.Api.Models;
@@ -15,16 +17,27 @@ builder.Services.AddDbContext<WebhooksDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("webhooks"));
 });
-builder.Services.AddHostedService<WebhookProcessor>();
-builder.Services.AddSingleton(_ =>
+builder.Services.AddMassTransit(busConfig =>
 {
-    return Channel.CreateBounded<WebhookDispatch>(new BoundedChannelOptions(100)
+    busConfig.SetKebabCaseEndpointNameFormatter();
+
+    busConfig.AddConsumer<WebhookDispatchedConsumer>();
+    busConfig.AddConsumer<WebhookTriggeredConsumer>();
+
+    busConfig.UsingRabbitMq((context, config) =>
     {
-        FullMode = BoundedChannelFullMode.Wait
+        config.Host(builder.Configuration.GetConnectionString("rabbitmq"));
+        config.ConfigureEndpoints(context);
     });
 });
 builder.Services.AddOpenTelemetry()
-    .WithTracing(trace => trace.AddSource(DiagnosticConfig.Source.Name));
+    .WithTracing(trace =>
+    {
+        trace
+            .AddSource(DiagnosticConfig.Source.Name)
+            .AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName)
+            .AddNpgsql();
+    });
 
 
 WebApplication app = builder.Build();
