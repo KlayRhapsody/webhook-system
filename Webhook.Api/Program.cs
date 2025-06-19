@@ -21,9 +21,6 @@ builder.Services.AddMassTransit(busConfig =>
 {
     busConfig.SetKebabCaseEndpointNameFormatter();
 
-    busConfig.AddConsumer<WebhookDispatchedConsumer>();
-    busConfig.AddConsumer<WebhookTriggeredConsumer>();
-
     busConfig.UsingRabbitMq((context, config) =>
     {
         config.Host(builder.Configuration.GetConnectionString("rabbitmq"));
@@ -38,7 +35,6 @@ builder.Services.AddOpenTelemetry()
             .AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName)
             .AddNpgsql();
     });
-
 
 WebApplication app = builder.Build();
 app.MapDefaultEndpoints();

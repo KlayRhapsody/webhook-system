@@ -6,7 +6,7 @@ POST {{Webhook_Api_HostAddress}}/orders
 Content-Type: application/json
 
 {
-    "customerName": "string",
+    "customerName": "albert",
     "amount": 123
 }
 
@@ -17,5 +17,5 @@ Content-Type: application/json
 
 {
     "eventType": "order.created",
-    "webhookUrl": "https://webhook-test.com/e34fd95db865ac86b05ad30f49dc41a7"
+    "webhookUrl": "https://webhook-test.com/1d4ff8618157c9912cd1f2deff34ec13"
 }

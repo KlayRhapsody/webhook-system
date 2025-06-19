@@ -9,15 +9,12 @@
   <ItemGroup>
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Npgsql.OpenTelemetry" Version="9.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aspire\Webhook.ServiceDefaults\Webhook.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Webhook.Contracts\Webhook.Contracts.csproj" />
+    <ProjectReference Include="..\Aspire\Webhook.ServiceDefaults\Webhook.ServiceDefaults.csproj" />
   </ItemGroup>
-
 </Project>

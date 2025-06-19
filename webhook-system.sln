@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhook.AppHost", "Aspire\W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhook.ServiceDefaults", "Aspire\Webhook.ServiceDefaults\Webhook.ServiceDefaults.csproj", "{0FAE66A2-E81E-4532-B2F9-70F846CD327C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhook.Process", "Webhook.Process\Webhook.Process.csproj", "{5C92B157-8963-4B68-B51E-222736794202}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhook.Contracts", "Webhook.Contracts\Webhook.Contracts.csproj", "{7374F463-36A9-4B9D-BA88-1F1DAE175C81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +32,14 @@ Global
 		{0FAE66A2-E81E-4532-B2F9-70F846CD327C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FAE66A2-E81E-4532-B2F9-70F846CD327C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FAE66A2-E81E-4532-B2F9-70F846CD327C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C92B157-8963-4B68-B51E-222736794202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C92B157-8963-4B68-B51E-222736794202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C92B157-8963-4B68-B51E-222736794202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C92B157-8963-4B68-B51E-222736794202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7374F463-36A9-4B9D-BA88-1F1DAE175C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7374F463-36A9-4B9D-BA88-1F1DAE175C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7374F463-36A9-4B9D-BA88-1F1DAE175C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7374F463-36A9-4B9D-BA88-1F1DAE175C81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

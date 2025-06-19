@@ -1,6 +1,6 @@
-namespace Webhook.Api.Services;
+namespace Webhook.Process.Services;
 
-internal sealed class WebhookPayload
+public sealed class WebhookPayload
 {
     public Guid Id { get; set; }
     public string EventType { get; set; }
